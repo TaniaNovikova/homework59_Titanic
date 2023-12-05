@@ -17,10 +17,10 @@ public class Titanic {
             System.out.println(str);//проверяем, удалось ли считать первую строку
             String[] cells = str.split(",");//разделили на отдельные ячейки данные строки,
             // между которыми стояла запятая
-         //   printCells(cells);
+            //   printCells(cells);
             str = br.readLine();
             cells = str.split(",");
-          //  printCells(cells);
+            //  printCells(cells);
            /* Task 1 Calculate total fares.
              Task 2 Calculate average fare for 1,2,3 classes of travel.
              Task 3 Calculate total quantity of survived and non survived passengers.
@@ -44,83 +44,106 @@ public class Titanic {
             int counterSurviversChildren = 0;
             int counterSurviversMen = 0;
             int counterSurviversWomen = 0;
+            int counterUncnownAge = 0;
+            int counterOfAccompanyingPersons = 0;
             int c = 0;
             while (str != null) {
                 totalPassangers++;
-                try {
-                    if (Integer.parseInt(cells[6]) < 18) {
+                if (!(cells[6].isEmpty())) {
+                    if (Double.parseDouble(cells[6]) < 18) {
                         counterChildren++;
                         if (Integer.parseInt(cells[1]) == 1) {
                             counterSurviversChildren++;
                         }
-                    }
-                } catch (NumberFormatException n) {
-                    System.out.println("Age is uncnown" + (++c));
-                }
 
+                    }
+                } else {
+                    counterUncnownAge++;
+                }
 
                 if (String.valueOf(cells[5]).equalsIgnoreCase(male)) {
-                    counterMale++;
-                    if (Integer.parseInt(cells[1]) == 1) {
-                        counterSurviversMen++;}
-                    } else {
-                        counterFemale++;
-                    if (Integer.parseInt(cells[1]) == 1) {
-                        counterSurviversWomen++;}
+                    if (!(cells[6].isEmpty())) {
+                        if (Double.parseDouble(cells[6]) >= 18) {
+                            counterMale++;
+                            if (Integer.parseInt(cells[1]) == 1) {
+                                counterSurviversMen++;
+                            }
+
+                        }
                     }
 
-                    if (Integer.parseInt(cells[1]) == 1) {
-                        totalQuantityOfSurvivedPassangers++;
-                    } else {
-                        totalQuantityOfNotSurvivedPassangers++;
-                    }
-                    cells = str.split(",");
-                    totalFares += Double.parseDouble(cells[10]);
-                    if (Integer.parseInt(cells[2]) == 1) {
-                        firstClassCounter++;
-                        firstClassFare = Double.parseDouble(cells[10]) + firstClassFare;
-                    } else if (Integer.parseInt(cells[2]) == 2) {
-                        secondClassCounter++;
-                        secondClassFare = Double.parseDouble(cells[10]) + secondClassFare;
-                    } else if (Integer.parseInt(cells[2]) == 3) {
-                        thirdClassCounter++;
-                        thirdClassFare = Double.parseDouble(cells[10]) + thirdClassFare;
-                    }
-
-                    str = br.readLine();
                 }
-                double firstClassAverageFare = firstClassFare / firstClassCounter;
-                double secondClassAverageFare = secondClassFare / secondClassCounter;
-                double thirdClassAverageFare = thirdClassFare / thirdClassCounter;
 
-                System.out.println("Total fares = " + totalFares);
-                System.out.println("Total passangers = " + totalPassangers);
+                if (String.valueOf(cells[5]).equalsIgnoreCase(female)) {
+                    if (!(cells[6].isEmpty())) {
+                        if (Double.parseDouble(cells[6]) >= 18) {
+                            counterFemale++;
+                            if (Integer.parseInt(cells[1]) == 1) {
+                                counterSurviversWomen++;
+                            }
 
-                System.out.println("First class average fare = " + firstClassAverageFare);
-                System.out.println("Second class average fare = " + secondClassAverageFare);
-                System.out.println("Third class average fare = " + thirdClassAverageFare);
-                // System.out.println(firstClassFare + secondClassFare + thirdClassFare);
-                System.out.println("Total quantity of survived passengers is " + totalQuantityOfSurvivedPassangers);
-                System.out.println("Total quantity of non survived passengers is " + totalQuantityOfNotSurvivedPassangers);
+                        }
+                    }
 
-                System.out.println("Male = " + counterMale);
-                System.out.println("Total quantity of survived men = " + counterSurviversMen);
-                System.out.println("Total quantity of not survived men = " + (counterMale-counterSurviversMen));
+                }
 
-                System.out.println("Female = " + counterFemale);
-            System.out.println("Total quantity of survived women = " + counterSurviversWomen);
-            System.out.println("Total quantity of not survived women = " + (counterFemale-counterSurviversWomen));
 
-                System.out.println("Cildren = " + counterChildren);
-                System.out.println("Total quantity of survived children = " + counterSurviversChildren);
-                System.out.println("Total quantity of not survived children = " + (counterChildren - counterSurviversChildren));
+                if (Integer.parseInt(cells[1]) == 1) {
+                    totalQuantityOfSurvivedPassangers++;
+                } else {
+                    totalQuantityOfNotSurvivedPassangers++;
+                }
+                cells = str.split(",");
+                totalFares += Double.parseDouble(cells[10]);
+                counterOfAccompanyingPersons+=Integer.parseInt(cells[7]);
+                if (Integer.parseInt(cells[2]) == 1) {
+                    firstClassCounter++;
+                    firstClassFare = Double.parseDouble(cells[10]) + firstClassFare;
+                } else if (Integer.parseInt(cells[2]) == 2) {
+                    secondClassCounter++;
+                    secondClassFare = Double.parseDouble(cells[10]) + secondClassFare;
+                } else if (Integer.parseInt(cells[2]) == 3) {
+                    thirdClassCounter++;
+                    thirdClassFare = Double.parseDouble(cells[10]) + thirdClassFare;
+                }
 
-            } catch(FileNotFoundException e){
-                e.printStackTrace();
-            } catch(IOException e){
-                e.printStackTrace();
+                str = br.readLine();
             }
+            double firstClassAverageFare = Math.rint(100.0 * firstClassFare / firstClassCounter) / 100.0;
+
+            double secondClassAverageFare = Math.rint(100.0 *secondClassFare / secondClassCounter)/100.0;
+            double thirdClassAverageFare = Math.rint(100.0 *thirdClassFare / thirdClassCounter)/100.0;
+
+            System.out.println("Total fares = " + Math.rint(100.0 *totalFares)/100.0);
+            System.out.println("Total passangers = " + (totalPassangers+counterOfAccompanyingPersons));
+            System.out.println("Number of accompaning persons is equal "+counterOfAccompanyingPersons);
+
+            System.out.println("First class average fare = " + firstClassAverageFare);
+            System.out.println("Second class average fare = " + secondClassAverageFare);
+            System.out.println("Third class average fare = " + thirdClassAverageFare);
+            // System.out.println(firstClassFare + secondClassFare + thirdClassFare);
+            System.out.println("Total quantity of survived passengers is " + totalQuantityOfSurvivedPassangers);
+            System.out.println("Total quantity of non survived passengers is " + totalQuantityOfNotSurvivedPassangers);
+
+            System.out.println("Male = " + counterMale);
+            System.out.println("Total quantity of survived men = " + counterSurviversMen);
+            System.out.println("Total quantity of not survived men = " + (counterMale - counterSurviversMen));
+
+            System.out.println("Female = " + counterFemale);
+            System.out.println("Total quantity of survived women = " + counterSurviversWomen);
+            System.out.println("Total quantity of not survived women = " + (counterFemale - counterSurviversWomen));
+
+            System.out.println("Cildren = " + counterChildren);
+            System.out.println("Total quantity of survived children = " + counterSurviversChildren);
+            System.out.println("Total quantity of not survived children = " + (counterChildren - counterSurviversChildren));
+            System.out.println("Uncnown age = " + counterUncnownAge);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
     private static void printCells(String[] cells) {
         for (String s : cells) {
