@@ -121,7 +121,7 @@ public class Titanic {
             System.out.println("First class average fare = " + firstClassAverageFare);
             System.out.println("Second class average fare = " + secondClassAverageFare);
             System.out.println("Third class average fare = " + thirdClassAverageFare);
-push            System.out.println("Total quantity of survived passengers is " + totalQuantityOfSurvivedPassangers);
+            System.out.println("Total quantity of survived passengers is " + totalQuantityOfSurvivedPassangers);
             System.out.println("Total quantity of non survived passengers is " + totalQuantityOfNotSurvivedPassangers);
 
             System.out.println("Male = " + counterMale);
